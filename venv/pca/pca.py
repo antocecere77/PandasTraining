@@ -65,3 +65,32 @@ plt.show()
 
 # Nonostante la riduzione da 13 a 2 proprietà la suddivisione delle classi all'interno del dataset è ben visibile.
 
+# Quante componenti principali selezionare ?
+# Nell'esempio, volendo costruire una visualizzazione, la scelta era forzata a 2 o 3, ma in altri casi vorremmo poter
+# selezionare il numero di componenti principali che ci permettono di ridurre la complessità del modello mantenendo la
+# maggior quantità possibile di informazione (cioè di varianza).
+
+# Per avere un'idea possiamo visualizzare graficamente la percentuale di varianza contenuta da ogni componente insieme
+# alla varianza comulativa di tutte le possibili componenti, o di una parte di esse.
+
+# Per prima cosa dobbiamo prima creare tutte le componenti principali, possiamo farlo impostando il parametro n_
+# components a None.
+
+
+from sklearn.decomposition import PCA
+
+pca = PCA(n_components=None)
+pc = pca.fit(X)
+print(pca.explained_variance_ratio_)
+
+# Adesso in pca sono presenti le 13 componenti principali, explained_variance_ratio_ contiene la percentuale della
+# varianza totale che ogni singola componente contiene.
+
+# Utilizziamo un grafico a barre in combinazione con uno step chart per visualizzare la varianza per ogni singola
+# componente e la varianza cumulativa. Per eseguire una somma cumulativa possiamo usare la funzione cumsum di Numpy.
+
+plt.bar(range(1, 14), pca.explained_variance_ratio_, align='center') # varianza per singola componente
+plt.step(range(1, 14), np.cumsum(pca.explained_variance_ratio_), where='mid') #varianza cumulativa
+plt.ylabel('Varianza')
+plt.xlabel('Componenti principali')
+plt.show()
